@@ -3,6 +3,7 @@ using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,8 +31,16 @@ builder.Services.AddAuthentication(
     .AddCookie(x =>
     {
         x.LoginPath = "/Login/Index";
+
     }
     );
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = new PathString("/Login/AccessDenied/");
+    options.LoginPath = "/Login/Index/";
+});
+
 
 var app = builder.Build();
 
@@ -39,9 +48,11 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 app.UseHttpsRedirection();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using System.Security.Claims;
 
 namespace CoreDemo.Controllers
@@ -48,5 +49,11 @@ namespace CoreDemo.Controllers
 			await _signInManager.SignOutAsync();
 			return RedirectToAction("Index", "Login");
 		}
-	}
+
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
+
+    }
 }
